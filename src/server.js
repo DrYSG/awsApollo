@@ -1,29 +1,20 @@
-import { ApolloServer, gql } from 'apollo-server-lambda'
-import { ApolloServer as ApolloLocal } from 'apollo-server'
+import { ApolloServer } from 'apollo-server'
+import { ApolloServer as ApolloServerLambda } from 'apollo-server-lambda'
+import { typeDefs, resolvers, connect } from './schema.js'
 
-// Construct a schema, using GraphQL schema language
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
+// The ApolloServer constructor requires two parameters: your schema
+// definition and your set of resolvers.
 
-// Provide resolver functions for your schema fields
-const resolvers = {
-  Query: {
-    hello: () => 'Hello world!',
-  },
-};
-
-const server = new ApolloServer({ typeDefs, resolvers });
-
-const localServer = new ApolloLocal({ typeDefs, resolvers });
-async function setup() {
-  let { url } = await localServer.listen()
+async function setup(server) {
+  let { url } = await server.listen()
   console.log(`🚀  Server ready at ${url}`)
   await connect()
 }
 
-setup()
-
-exports.graphqlHandler = server.createHandler()
+if (process.env.USERNAME == 'ysg4206') {
+  const server = new ApolloServer({ typeDefs, resolvers })
+  setup(server)
+} else {
+  const server = new ApolloServerLambda(clone(typeDefs, resolvers))
+  exports.graphqlHandler = server.createHandler()
+}
