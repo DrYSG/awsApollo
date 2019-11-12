@@ -1,0 +1,31 @@
+{
+  "name": "awsapollo",
+  "version": "1.0.0",
+  "description": "aws apollo",
+  "main": "server.js",
+  "scripts": {
+    "build": "./node_modules/.bin/parcel ./src/server.js --target node",
+    "build-watch": "./node_modules/.bin/parcel watch ./src/server.js --target node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrYSG/awsApollo.git"
+  },
+  "keywords": [
+    "aws",
+    "lambda"
+  ],
+  "author": "YSG",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DrYSG/awsApollo/issues"
+  },
+  "homepage": "https://github.com/DrYSG/awsApollo#readme",
+  "dependencies": {
+    "apollo-server-lambda": "^2.9.7",
+    "graphql": "^14.5.8"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
