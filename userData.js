@@ -1,5 +1,5 @@
 
-export let userData =
+exports.userData =
     [{ "firstName": "Emmie", "lastName": "Moir", "addressNumber": 81, "streetName": "Sommers", "city": "Komsomol’skiy", "email": "emoir0@arizona.edu" },
     { "firstName": "Palmer", "lastName": "Overbury", "addressNumber": 71, "streetName": "Atwood", "city": "Zmiyëvka", "email": "poverbury1@admin.ch" },
     { "firstName": "Keene", "lastName": "Rollinson", "addressNumber": 95, "streetName": "Truax", "city": "Xylaganí", "email": "krollinson2@arizona.edu" },

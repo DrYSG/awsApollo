@@ -2,7 +2,7 @@ const { gql } = require('apollo-server')
 const { DB } = require('./db')
 const { GraphQLDateTime } = require('graphql-iso-date')
 
-export const typeDefs = gql`
+exports.typeDefs = gql`
   scalar DateTime
 
   type User {
@@ -43,7 +43,7 @@ export const typeDefs = gql`
   }
 `
 
-export const resolvers = {
+exports.resolvers = {
   Query: {
     // users: async () => {
     //   let users = await DB.findAll()
@@ -66,7 +66,7 @@ export const resolvers = {
   }
 }
 
-export async function connect() {
+exports.connect = async function connect() {
   await DB.dbSetup()
   await DB.populate()
   let users = await DB.findAll()
