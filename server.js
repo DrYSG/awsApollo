@@ -28,12 +28,13 @@ if (process.env.USERNAME == 'ysg4206') {
       origin: '*',
       credentials: true,
     },
-    context: ({ event, context }) => (
-      console.log({
+    context: ({ event, context }) => ( 
+      {
         headers: event.headers,
         functionName: context.functionName,
         event,
         context,
-      }, ' ', 2)),
+      }
+    )
   })
 }
