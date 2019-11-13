@@ -20,6 +20,11 @@ if (process.env.USERNAME == 'ysg4206') {
   setup(server)
 } else {
   const server = new ApolloServerLambda({ typeDefs, resolvers })
-  awsSetup()
-  exports.graphqlHandler = server.createHandler()
+  //awsSetup()
+  exports.graphqlHandler = server.createHandler({
+    cors: {
+      origin: '*',
+      credentials: true,
+    },
+  })
 }
