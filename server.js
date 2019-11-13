@@ -22,9 +22,18 @@ if (process.env.USERNAME == 'ysg4206') {
   const server = new ApolloServerLambda({ typeDefs, resolvers })
   //awsSetup()
   exports.graphqlHandler = server.createHandler({
+    playground: true,
+    introspection: true,
     cors: {
       origin: '*',
       credentials: true,
     },
+    context: ({ event, context }) => (
+      console.log({
+        headers: event.headers,
+        functionName: context.functionName,
+        event,
+        context,
+      }, ' ', 2)),
   })
 }
