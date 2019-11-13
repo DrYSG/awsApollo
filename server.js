@@ -1,6 +1,6 @@
 const { ApolloServer } = require('apollo-server')
-const { ApolloServer: ApolloServerLambda } = require( 'apollo-server-lambda')
-const { typeDefs, resolvers, connect } = require ('./schema.js')
+const { ApolloServer: ApolloServerLambda } = require('apollo-server-lambda')
+const { typeDefs, resolvers, connect } = require('./schema.js')
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -15,6 +15,6 @@ if (process.env.USERNAME == 'ysg4206') {
   const server = new ApolloServer({ typeDefs, resolvers })
   setup(server)
 } else {
-  const server = new ApolloServerLambda({ typeDefs: { ...typeDefs }, resolvers: { ...resolvers } })
+  const server = new ApolloServerLambda({ typeDefs, resolvers })
   exports.graphqlHandler = server.createHandler()
 }
