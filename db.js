@@ -1,5 +1,5 @@
-import { Sequelize } from 'sequelize'
-import { userData } from './userData'
+const { Sequelize } = require('sequelize')
+const { userData } = require('./userData')
 
 class DB {
     constructor() {
@@ -60,4 +60,4 @@ class DB {
     }
 }
 
-export default new DB()
+exports.DB = new DB()

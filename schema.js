@@ -1,6 +1,6 @@
-import { gql } from 'apollo-server'
-import DB from './db'
-import { GraphQLDateTime } from 'graphql-iso-date'
+const { gql } = require('apollo-server')
+const { DB } = require('./db')
+const { GraphQLDateTime } = require('graphql-iso-date')
 
 export const typeDefs = gql`
   scalar DateTime
@@ -54,7 +54,7 @@ export const resolvers = {
       let who = await DB.findFirst(firstName)
       return who
     },
-    hello: (_, {reply}) => {
+    hello: (_, { reply }) => {
       return reply
     }
   },
