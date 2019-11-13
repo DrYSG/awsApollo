@@ -66,8 +66,8 @@ exports.resolvers = {
   }
 }
 
-exports.connect = async function connect() {
-  await DB.dbSetup()
+exports.connect = async function connect(where) {
+  await DB.dbSetup(where)
   await DB.populate()
   let users = await DB.findAll()
   console.log(users)

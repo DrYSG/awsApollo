@@ -8,7 +8,11 @@ const { typeDefs, resolvers, connect } = require('./schema.js')
 async function setup(server) {
   let { url } = await server.listen()
   console.log(`🚀  Server ready at ${url}`)
-  await connect()
+  await connect("local")
+}
+
+async function awsSetup() {
+  await connect("aws")
 }
 
 if (process.env.USERNAME == 'ysg4206') {
@@ -16,5 +20,6 @@ if (process.env.USERNAME == 'ysg4206') {
   setup(server)
 } else {
   const server = new ApolloServerLambda({ typeDefs, resolvers })
+  awsSetup()
   exports.graphqlHandler = server.createHandler()
 }

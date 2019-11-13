@@ -2,8 +2,20 @@ const { Sequelize } = require('sequelize')
 const { userData } = require('./userData')
 
 class DB {
-    constructor() {
-        this.db = new Sequelize('m3_db', 'postgres', 'yechezkal', { dialect: 'postgres', logging: false })
+
+    async dbSetup(where) {
+        if (where == "local") {
+            this.db = new Sequelize('m3_db', 'postgres', 'yechezkal', {
+                dialect: 'postgres',
+                logging: false
+            })
+        } else {
+            this.db = new Sequelize('ysgdb', 'postgres', 'yechezkal', {
+                host: 'ysgdb.cxeokcheapqj.us-east-2.rds.amazonaws.com',
+                dialect: 'postgres',
+                logging: false
+            })
+        }
         this.User = this.db.define('users', {
             firstName: Sequelize.STRING,
             lastName: Sequelize.STRING,
@@ -12,9 +24,6 @@ class DB {
             city: Sequelize.STRING,
             email: Sequelize.STRING,
         })
-    }
-
-    async dbSetup() {
         try {
             await this.db.authenticate()
             console.log('Connected to DB')
