@@ -54,7 +54,10 @@ exports.resolvers = {
       let who = await DB.findFirst(firstName)
       return who
     },
-    hello: (_, { reply }) => {
+    hello: (_, { reply }, context, info) => {
+      console.log(`hello with reply ${reply}`)
+      console.log(`context : ${JSON.stringify(context, null, 4)}`)
+      console.log(`info : ${JSON.stringify(info, null, 4)}`)
       return reply
     }
   },

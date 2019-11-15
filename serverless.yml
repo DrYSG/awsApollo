@@ -1,3 +1,5 @@
+org: ygutfreund
+app: awsapollo
 # serverless.yml
 
 service: apollo-lambda
