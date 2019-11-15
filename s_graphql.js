@@ -4,11 +4,11 @@ tenantId: 'ygutfreund',
 applicationName: 'awsapollo',
 appUid: 'hGwhKwj4PcBV3MYxHT',
 tenantUid: 'y4jQk0ckJQNBvJ544j',
-deploymentUid: '3e682d00-6fb3-4cec-957b-d4859ca90d24',
+deploymentUid: 'ccd55426-e0b7-4005-ba46-1a3ac93517bd',
 serviceName: 'apollo-lambda',
-stageName: 'beta',
+stageName: 'dev',
 pluginVersion: '3.2.3'})
-const handlerWrapperArgs = { functionName: 'apollo-lambda-beta-graphql', timeout: 6}
+const handlerWrapperArgs = { functionName: 'apollo-lambda-dev-graphql', timeout: 6}
 try {
   const userHandler = require('./server.js')
   module.exports.handler = serverlessSDK.handler(userHandler.graphqlHandler, handlerWrapperArgs)
