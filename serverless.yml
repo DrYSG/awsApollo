@@ -13,13 +13,6 @@ functions:
   graphql:
     # this is formatted as <FILENAME>.<HANDLER>
     handler: server.graphqlHandler
-    vpc:
-      securityGroupIds:
-        - sg-a1e6f4c3
-      subnetIds:
-        - subnet-53b45038
-        - subnet-4a2a7830
-        - subnet-1469d358
     events:
     - http:
         path: graphql
