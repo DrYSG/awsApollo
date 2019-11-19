@@ -1,5 +1,4 @@
 const { gql } = require('apollo-server')
-const { DB } = require('./db')
 const { GraphQLDateTime } = require('graphql-iso-date')
 
 exports.typeDefs = gql`
@@ -67,11 +66,4 @@ exports.resolvers = {
       return who
     }
   }
-}
-
-exports.connect = async function connect(where) {
-  await DB.dbSetup(where)
-  await DB.populate()
-  let users = await DB.findAll()
-  console.log(users)
 }

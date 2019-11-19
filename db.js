@@ -10,8 +10,8 @@ class DB {
                 logging: false
             })
         } else {
-            this.db = new Sequelize('ysgdb', 'postgres', 'yechezkal', {
-                host: 'ysgdb.cxeokcheapqj.us-east-2.rds.amazonaws.com',
+            this.db = new Sequelize('apollodb', 'postgres', 'yechezkal', {
+                host: 'apollodb.cxeokcheapqj.us-east-2.rds.amazonaws.com',
                 dialect: 'postgres',
                 logging: false
             })
