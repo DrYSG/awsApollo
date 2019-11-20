@@ -1,7 +1,6 @@
 const { ApolloServer } = require('apollo-server')
-const { DB } = require('./db.js')
 const { ApolloServer: ApolloServerLambda } = require('apollo-server-lambda')
-const { typeDefs, resolvers } = require('./schema.js')
+const { typeDefs, resolvers, connect } = require('./schema.js')
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -33,16 +32,6 @@ async function setup(where) {
   }
 }
 
-async function connect(where) {
-  await DB.dbSetup(where)
-  await DB.populate()
-  let users = await DB.findAll()
-  console.log(users)
-  setup(where)
-  DB.close()
-}
-
-global.DB = DB
 let location = (process.env.USERNAME == 'ysg4206') ? 'local' : 'aws'
-connect(location)
+connect(location, setup)
 

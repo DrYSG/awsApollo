@@ -1,21 +1,38 @@
 const { Sequelize } = require('sequelize')
 const { userData } = require('./userData')
 
+const localHost = {
+    db: 'm3_db',
+    host: 'localhost',
+    pass: 'yechezkal'
+}
+const awsHost = {
+    db: 'mapollodb3_db',
+    host: 'apollodb.cxeokcheapqj.us-east-2.rds.amazonaws.com',
+    pass: 'yechezkal'
+}
+
 class DB {
 
     async dbSetup(where) {
-        if (where == "local") {
-            this.db = new Sequelize('m3_db', 'postgres', 'yechezkal', {
-                dialect: 'postgres',
-                logging: false
-            })
-        } else {
-            this.db = new Sequelize('apollodb', 'postgres', 'yechezkal', {
-                host: 'apollodb.cxeokcheapqj.us-east-2.rds.amazonaws.com',
-                dialect: 'postgres',
-                logging: false
-            })
-        }
+        let host = (where == "local") ? localHost : awsHost
+        this.db = new Sequelize(host.db, 'postgres', host.pass, {
+            host: host.host,
+            dialect: 'postgres',
+            logging: false,
+            pool: {
+                max: 5,
+                min: 0,
+                idle: 20000,
+                handleDisconnects: true
+            },
+            dialectOptions: {
+                requestTimeout: 100000
+            },
+            define: {
+                freezeTableName: true
+            }
+        })
         this.User = this.db.define('users', {
             firstName: Sequelize.STRING,
             lastName: Sequelize.STRING,
