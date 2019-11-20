@@ -12,10 +12,9 @@ async function setup(where) {
     let { url } = await server.listen()
     console.log(`Server ready at ${url}`)
   } else {
-    let users = await DB.findAll()
-    console.log(users)
-    const server = new ApolloServerLambda({ typeDefs, resolvers })
-    exports.graphqlHandler = server.createHandler({
+    const server = new ApolloServerLambda({ 
+      typeDefs, 
+      resolvers,
       playground: true,
       introspection: true,
       cors: {
@@ -30,6 +29,7 @@ async function setup(where) {
           context
         })
     })
+    exports.graphqlHandler = server.createHandler()
   }
 }
 
@@ -39,6 +39,7 @@ async function connect(where) {
   let users = await DB.findAll()
   console.log(users)
   setup(where)
+  DB.close()
 }
 
 global.DB = DB
