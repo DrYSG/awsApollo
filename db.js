@@ -7,7 +7,7 @@ const localHost = {
     pass: 'yechezkal'
 }
 const awsHost = {
-    db: 'mapollodb3_db',
+    db: 'apollodb',
     host: 'apollodb.cxeokcheapqj.us-east-2.rds.amazonaws.com',
     pass: 'yechezkal'
 }
@@ -16,6 +16,7 @@ class DB {
 
     async dbSetup(where) {
         let host = (where == "local") ? localHost : awsHost
+        console.log(`Host: ${JSON.stringify(host)}`)
         this.db = new Sequelize(host.db, 'postgres', host.pass, {
             host: host.host,
             dialect: 'postgres',

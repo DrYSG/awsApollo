@@ -45,10 +45,6 @@ exports.typeDefs = gql`
 
 exports.resolvers = {
   Query: {
-    // users: async () => {
-    //   let users = await DB.findAll()
-    //   return users
-    // },
     users: () => DB.findAll(),
     findUser: async (_, { firstName }) => {
       let who = await DB.findFirst(firstName)
@@ -70,9 +66,10 @@ exports.resolvers = {
 }
 
 exports.connect = async (where, setup) => {
-  await DB.dbSetup(where)
-  await DB.populate()
-  let users = await DB.findAll()
-  console.log(users)
+  console.log(`value of DB: ${JSON.stringify(DB)}`)
+  //await DB.dbSetup(where)             //BUG these lines cause Lambda to fail
+  //await DB.populate()                 //BUG these lines cause Lambda to fail
+  //let users = await DB.findAll()      //BUG these lines cause Lambda to fail
+  //console.log(users)                  //BUG these lines cause Lambda to fail
   await setup(where)
 }
