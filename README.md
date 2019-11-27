@@ -1,2 +1,2 @@
-# awsApollo
-awsApollo
+# Azure Apollo
+Simple Apollo server
