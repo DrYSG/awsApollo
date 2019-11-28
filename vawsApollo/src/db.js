@@ -80,43 +80,28 @@ class DB {
     }
 
     async select(id) {
-<<<<<<< HEAD
         await this.connect()
         let who = await this.User.findAll({ where: { id: id } })
         await this.close()
-=======
-        let who = await this.User.findAll({ where: { id: id } })
->>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
         return who.get({ plain: true })
     }
 
     async findFirst(name) {
-<<<<<<< HEAD
         await this.connect()
         let me = await this.User.findAll({ where: { firstName: name } })
         await this.close()
-=======
-        let me = await this.User.findAll({ where: { firstName: name } })
->>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
         return me[0].get({ plain: true })
     }
 
     async addUser(user) {
-<<<<<<< HEAD
         await this.connect()
         let me = await this.User.create(user)
         await this.close()
-=======
-        let me = await this.User.create(user)
->>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
         return me.get({ plain: true })
     }
 
     async  populate() {
-<<<<<<< HEAD
         await this.connect()
-=======
->>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
         await this.db.sync({ force: true })
         try {
             await this.User.bulkCreate(userData, { validate: true })
@@ -125,36 +110,21 @@ class DB {
             console.error('failed to create users')
             console.error(err)
         } finally {
-<<<<<<< HEAD
             await this.close()
-=======
->>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
         }
     }
 
     async findAll() {
-<<<<<<< HEAD
         await this.connect()
         let users = await this.User.findAll({ raw: true })
         await this.close()
-=======
-        let users = await this.User.findAll({ raw: true })
->>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
         return users
     }
 
     async close() {
-<<<<<<< HEAD
         await this.db.close()
         this.db = null
     }
 }
 
 exports.DB = new DB('aws')
-=======
-        this.db.close()
-    }
-}
-
-exports.DB = new DB()
->>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
