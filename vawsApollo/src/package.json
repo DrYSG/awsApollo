@@ -1,5 +1,5 @@
 {
-  "name": "hello_world",
+  "name": "apolloserver",
   "version": "1.0.0",
   "description": "apollo server",
   "main": "server.js",
@@ -7,7 +7,12 @@
   "author": "SAM CLI",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0"
+    "apollo-server-lambda": "^2.9.12",
+    "graphql": "^14.5.8",
+    "graphql-iso-date": "^3.6.1",
+    "pg": "^7.14.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.2"
   },
   "scripts": {
   },
