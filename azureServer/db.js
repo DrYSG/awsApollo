@@ -15,7 +15,7 @@ const awsHost = {
 }
 
 const azureHost = {
-    db: 'postdb',
+    db: 'postgres',
     user: 'postgres@postdb',
     host: 'postdb.postgres.database.azure.com',
     pass: 'Yechezkal1'
@@ -45,7 +45,7 @@ class DB {
 
     async open() {
         let host = this.conn
-        context.log(`Host: ${JSON.stringify(host)}`)
+        console.log(`Host: ${JSON.stringify(host)}`)
         this.db = new Sequelize(host.db, host.user, host.pass, {
             host: host.host,
             dialect: 'postgres',
@@ -73,9 +73,9 @@ class DB {
         })
         try {
             await this.db.authenticate()
-            context.log('Connected to DB')
+            console.log('Connected to DB')
         } catch (err) {
-            context.error('Unable to connect to DB', err)
+            console.error('Unable to connect to DB', err)
         }
     }
 
@@ -105,10 +105,10 @@ class DB {
         await this.db.sync({ force: true })
         try {
             await this.User.bulkCreate(userData, { validate: true })
-            context.log('users created');
+            console.log('users created');
         } catch (err) {
-            context.error('failed to create users')
-            context.error(err)
+            console.error('failed to create users')
+            console.error(err)
         } finally {
             await this.close()
         }
@@ -127,4 +127,4 @@ class DB {
     }
 }
 
-exports.DB = new DB('aws')
+exports.DB = new DB('azure')

@@ -1,21 +1,21 @@
-const { ApolloServer, gql } = require('apollo-server-azure-functions')
+const { ApolloServer } =  require('apollo-server-azure-functions')
+const { typeDefs, resolvers } = require('./schema.js')
 
-// Construct a schema, using GraphQL schema language
-const typeDefs = gql`
-  type Query {
-    hello(who: String): String
-  }
-`
-
-// Provide resolver functions for your schema fields
-const resolvers = {
-  Query: {
-    hello: (parent, { who }, context, info) => {
-      return (`Azure welcomes: ${who}`)
-    },
-  }
-}
-
-const server = new ApolloServer({ typeDefs, resolvers })
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  playground: true,
+  introspection: true,
+  cors: {
+    origin: '*',
+    credentials: true,
+  },
+  context: ({ context, req }) => (
+    {
+      req,
+      context
+    })
+})
 
 module.exports = server.createHandler()
+
