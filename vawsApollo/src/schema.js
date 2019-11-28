@@ -36,7 +36,10 @@ exports.typeDefs = gql`
 
   type Mutation {
     addUser(user: UserType): User!
+<<<<<<< HEAD
     populate: String
+=======
+>>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
   }
 
   type Subscription {
@@ -46,6 +49,13 @@ exports.typeDefs = gql`
 
 exports.resolvers = {
   Query: {
+<<<<<<< HEAD
+=======
+    // users: async () => {
+    //   let users = await DB.findAll()
+    //   return users
+    // },
+>>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
     users: () => DB.findAll(),
     findUser: async (_, { firstName }) => {
       let who = await DB.findFirst(firstName)
@@ -62,10 +72,13 @@ exports.resolvers = {
     addUser: async (_, args) => {
       let who = await DB.addUser(args.user)
       return who
+<<<<<<< HEAD
     },
     populate: async () => {
       await DB.populate()
       return 'done'
+=======
+>>>>>>> f1cbe9ad3928899db68a8a6269dceb44990a4e59
     }
   }
 }
