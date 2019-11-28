@@ -47,7 +47,11 @@
                         "Fn::Join": [
                           "",
                           [
-                            "arn:aws:s3:::",
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":s3:::",
                             {
                               "Ref": "ServerlessDeploymentBucket"
                             },
@@ -215,7 +219,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/apollo-lambda/dev/1574696528975-2019-11-25T15:42:08.975Z/apollo-lambda.zip"
+                "S3Key": "serverless/apollo-lambda/dev/1574955741723-2019-11-28T15:42:21.723Z/apollo-lambda.zip"
               },
               "FunctionName": "apollo-lambda-dev-graphql",
               "Handler": "s_graphql.handler",
@@ -244,14 +248,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "GraphqlLambdaVersiondneYrHGxkhZnD9HJ4GtP4g2Arkfct5mxXPRkfBSEsVA": {
+          "GraphqlLambdaVersion3HzcSMLkC0NTaphItwMdqtIVeC9ti8PN0wghmoeZxBE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GraphqlLambdaFunction"
               },
-              "CodeSha256": "bZCigGoBsArY7+VzaWFxAX3mY0sUjidOyF2BZTbrAqQ="
+              "CodeSha256": "3p5dxJmCyv1vA4V9hzkXKsx+zCTfHS23mMZN5MctSA0="
             }
           },
           "ApiGatewayRestApi": {
@@ -413,7 +417,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1574695875710": {
+          "ApiGatewayDeployment1574955717720": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -558,12 +562,12 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/apollo-lambda/dev/1574696528975-2019-11-25T15:42:08.975Z/custom-resources.zip"
+                "S3Key": "serverless/apollo-lambda/dev/1574955741723-2019-11-28T15:42:21.723Z/custom-resources.zip"
               },
               "FunctionName": "apollo-lambda-dev-custom-resource-apigw-cw-role",
               "Handler": "apiGatewayCloudWatchRole/handler.handler",
               "MemorySize": 1024,
-              "Runtime": "nodejs10.x",
+              "Runtime": "nodejs12.x",
               "Timeout": 180,
               "Role": {
                 "Fn::GetAtt": [
@@ -614,7 +618,7 @@
           "GraphqlLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GraphqlLambdaVersiondneYrHGxkhZnD9HJ4GtP4g2Arkfct5mxXPRkfBSEsVA"
+              "Ref": "GraphqlLambdaVersion3HzcSMLkC0NTaphItwMdqtIVeC9ti8PN0wghmoeZxBE"
             }
           },
           "ServiceEndpoint": {
@@ -677,7 +681,11 @@
                         "Fn::Join": [
                           "",
                           [
-                            "arn:aws:s3:::",
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":s3:::",
                             {
                               "Ref": "ServerlessDeploymentBucket"
                             },
@@ -794,10 +802,10 @@
     "layers": {},
     "appUid": "hGwhKwj4PcBV3MYxHT",
     "tenantUid": "y4jQk0ckJQNBvJ544j",
-    "artifact": "D:\\wwwroot\\awsApollo\\.serverless\\apollo-lambda.zip"
+    "artifact": "C:\\Cloud\\awsApollo\\.serverless\\apollo-lambda.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/apollo-lambda/dev/1574696528975-2019-11-25T15:42:08.975Z",
+    "artifactDirectoryName": "serverless/apollo-lambda/dev/1574955741723-2019-11-28T15:42:21.723Z",
     "artifact": "apollo-lambda.zip"
   }
 }
