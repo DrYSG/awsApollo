@@ -86,9 +86,10 @@ class DB {
         return who.get({ plain: true })
     }
 
-    async findFirst(name) {
+    async findFirst(name, context) {
         await this.connect()
         let me = await this.User.findAll({ where: { firstName: name } })
+        context.log(`findFirst: ${name}`)
         await this.close()
         return me[0].get({ plain: true })
     }
@@ -100,15 +101,15 @@ class DB {
         return me.get({ plain: true })
     }
 
-    async  populate() {
+    async  populate(context) {
         await this.connect()
         await this.db.sync({ force: true })
         try {
             await this.User.bulkCreate(userData, { validate: true })
-            console.log('users created');
+            context.log('users created');
         } catch (err) {
-            console.error('failed to create users')
-            console.error(err)
+            context.error('failed to create users')
+            context.error(err)
         } finally {
             await this.close()
         }

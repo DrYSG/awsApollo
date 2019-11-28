@@ -47,8 +47,8 @@ exports.typeDefs = gql`
 exports.resolvers = {
   Query: {
     users: () => DB.findAll(),
-    findUser: async (_, { firstName }) => {
-      let who = await DB.findFirst(firstName)
+    findUser: async (_, { firstName }, conText) => {
+      let who = await DB.findFirst(firstName, conText.context)
       return who
     },
     hello: (_, { reply }, conText, info) => {
@@ -59,12 +59,12 @@ exports.resolvers = {
     }
   },
   Mutation: {
-    addUser: async (_, args) => {
+    addUser: async (_, args, conText) => {
       let who = await DB.addUser(args.user)
       return who
     },
-    populate: async () => {
-      await DB.populate()
+    populate: async (_, __, conText) => {
+      await DB.populate(conText.context)
       return 'done'
     }
   }

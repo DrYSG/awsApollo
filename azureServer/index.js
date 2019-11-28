@@ -1,4 +1,4 @@
-const { ApolloServer } =  require('apollo-server-azure-functions')
+const { ApolloServer } = require('apollo-server-azure-functions')
 const { typeDefs, resolvers } = require('./schema.js')
 
 const server = new ApolloServer({
@@ -14,7 +14,8 @@ const server = new ApolloServer({
     {
       req,
       context
-    })
+    }
+  )
 })
 
 module.exports = server.createHandler()
