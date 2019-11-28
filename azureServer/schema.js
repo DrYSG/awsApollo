@@ -1,6 +1,6 @@
-const { gql } = require('apollo-server')
+const { gql } = require('apollo-server-azure-functions')
 const { GraphQLDateTime } = require('graphql-iso-date')
-const { DB } = require('./db.js/index.js.js')
+const { DB } = require('./db.js')
 
 exports.typeDefs = gql`
   scalar DateTime
@@ -36,6 +36,7 @@ exports.typeDefs = gql`
 
   type Mutation {
     addUser(user: UserType): User!
+    populate: String
   }
 
   type Subscription {
@@ -51,9 +52,9 @@ exports.resolvers = {
       return who
     },
     hello: (_, { reply }, context, info) => {
-      console.log(`hello with reply ${reply}`)
-      console.log(`context : ${JSON.stringify(context)}`)
-      console.log(`info : ${JSON.stringify(info)}`)
+      context.log(`hello with reply ${reply}`)
+      context.log(`context : ${JSON.stringify(context)}`)
+      context.log(`info : ${JSON.stringify(info)}`)
       return reply
     }
   },
@@ -61,15 +62,10 @@ exports.resolvers = {
     addUser: async (_, args) => {
       let who = await DB.addUser(args.user)
       return who
+    },
+    populate: async () => {
+      await DB.populate()
+      return 'done'
     }
   }
-}
-
-exports.connect = async (where, setup) => {
-  console.log(`value of DB: ${JSON.stringify(DB)}`)
-  //await DB.dbSetup(where)             //BUG these lines cause Lambda to fail
-  //await DB.populate()                 //BUG these lines cause Lambda to fail
-  //let users = await DB.findAll()      //BUG these lines cause Lambda to fail
-  //console.log(users)                  //BUG these lines cause Lambda to fail
-  await setup(where)
 }
