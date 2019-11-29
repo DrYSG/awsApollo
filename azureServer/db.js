@@ -25,6 +25,7 @@ class DB {
     constructor(where) {
         this.conn = null
         this.db = null
+        this.log = () => { }
         switch (where) {
             case 'local':
                 this.conn = localHost; break;
@@ -35,7 +36,8 @@ class DB {
         }
     }
 
-    async connect() {
+    async connect(logger) {
+        this.log = logger
         if (this.db !== null) return this.db
         else {
             await this.open()
@@ -45,7 +47,7 @@ class DB {
 
     async open() {
         let host = this.conn
-        console.log(`Host: ${JSON.stringify(host)}`)
+        this.log.info(`Host: ${JSON.stringify(host)}`)
         this.db = new Sequelize(host.db, host.user, host.pass, {
             host: host.host,
             dialect: 'postgres',
@@ -73,50 +75,49 @@ class DB {
         })
         try {
             await this.db.authenticate()
-            console.log('Connected to DB')
+            this.log.info('Connected to DB')
         } catch (err) {
-            console.error('Unable to connect to DB', err)
+            this.log.error('Unable to connect to DB', err)
         }
     }
 
-    async select(id) {
-        await this.connect()
+    async select(id, logger) {
+        await this.connect(logger)
         let who = await this.User.findAll({ where: { id: id } })
         await this.close()
         return who.get({ plain: true })
     }
 
-    async findFirst(name, context) {
-        await this.connect()
+    async findFirst(name, logger) {
+        await this.connect(logger)
         let me = await this.User.findAll({ where: { firstName: name } })
-        context.log(`findFirst: ${name}`)
+        this.log.info(`findFirst: ${name}`)
         await this.close()
         return me[0].get({ plain: true })
     }
 
-    async addUser(user) {
-        await this.connect()
+    async addUser(user, logger) {
+        await this.connect(logger)
         let me = await this.User.create(user)
         await this.close()
         return me.get({ plain: true })
     }
 
-    async  populate(context) {
-        await this.connect()
+    async  populate(logger) {
+        await this.connect(logger)
         await this.db.sync({ force: true })
         try {
             await this.User.bulkCreate(userData, { validate: true })
-            context.log('users created');
+            this.log.info('users created')
         } catch (err) {
-            context.error('failed to create users')
-            context.error(err)
+            this.log.error(`failed to create users, err: ${err}`)
         } finally {
             await this.close()
         }
     }
 
-    async findAll() {
-        await this.connect()
+    async findAll(logger) {
+        await this.connect(logger)
         let users = await this.User.findAll({ raw: true })
         await this.close()
         return users

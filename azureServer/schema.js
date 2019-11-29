@@ -46,25 +46,26 @@ exports.typeDefs = gql`
 
 exports.resolvers = {
   Query: {
-    users: () => DB.findAll(),
-    findUser: async (_, { firstName }, conText) => {
-      let who = await DB.findFirst(firstName, conText.context)
+    users: (_, __, context) => DB.findAll(context.context.log),
+    findUser: async (_, { firstName }, context) => {
+      let who = await DB.findFirst(firstName, context.context.log)
       return who
     },
-    hello: (_, { reply }, conText, info) => {
-      conText.context.log(`hello with reply ${reply}`)
-      conText.context.log(`context : ${JSON.stringify(conText.context)}`)
-      conText.context.log(`info : ${JSON.stringify(info)}`)
+    hello: (_, { reply }, context, info) => {
+      const logger = context.context.log
+      logger.info(`hello with reply ${reply}`)
+      logger.info(`context : ${JSON.stringify(context)}`)
+      logger.info(`info : ${JSON.stringify(info)}`)
       return reply
     }
   },
   Mutation: {
-    addUser: async (_, args, conText) => {
-      let who = await DB.addUser(args.user)
+    addUser: async (_, args, context) => {
+      let who = await DB.addUser(args.user, context.context.log)
       return who
     },
-    populate: async (_, __, conText) => {
-      await DB.populate(conText.context)
+    populate: async (_, __, context) => {
+      await DB.populate(context.context.log)
       return 'done'
     }
   }
