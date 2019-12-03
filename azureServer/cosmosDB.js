@@ -1,17 +1,12 @@
-const { Sequelize } = require('sequelize')
 const { userData } = require('./userData')
 
 const localHost = {
-    db: 'm3_db',
     user: 'postgres',
+    db: '',
     host: 'localhost',
-    pass: 'yechezkal'
-}
-const awsHost = {
-    db: 'apollodb',
-    user: 'postgres',
-    host: 'apollodb.cxeokcheapqj.us-east-2.rds.amazonaws.com',
-    pass: 'yechezkal'
+    port: '8081',
+    pass: 'yechezkal',
+    string: 'mongodb://localhost:C2y6yDjf5%2FR%2Bob0N8A7Cgv30VRDJIWEHLM%2B4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw%2FJw%3D%3D@localhost:10255/admin?ssl=true'
 }
 
 const azureHost = {
@@ -21,7 +16,7 @@ const azureHost = {
     pass: 'Yechezkal1'
 }
 
-class DB {
+class Cosmos {
     constructor(where) {
         this.conn = null
         this.db = null
@@ -129,4 +124,4 @@ class DB {
     }
 }
 
-exports.DB = new DB('local')
+exports.DB = new Cosmos('local')
