@@ -70,24 +70,25 @@ class Cosmos {
 
     async select(id, logger) {
         await this.connect(logger)
-        let who = await this.User.findAll({ where: { id: id } })
-        await this.close()
-        return who.get({ plain: true })
+        let who = await this.users.findOne({ id: id } )
+        await this.db.connection.close()
+        return who
     }
 
     async findFirst(name, logger) {
         await this.connect(logger)
-        let me = await this.User.findAll({ where: { firstName: name } })
         this.log.info(`findFirst: ${name}`)
-        await this.close()
-        return me[0].get({ plain: true })
+        let me = await this.users.findOne({ firstName: name })
+        await this.db.connection.close()
+        return me
     }
 
     async addUser(user, logger) {
         await this.connect(logger)
-        let me = await this.User.create(user)
-        await this.close()
-        return me.get({ plain: true })
+        const me = this.users(user)
+        let me = await me.save()
+        await this.db.connection.close()
+        return user
     }
 
     async populate(logger) {
@@ -105,8 +106,8 @@ class Cosmos {
 
     async findAll(logger) {
         await this.connect(logger)
-        let users = await this.User.findAll({ raw: true })
-        await this.close()
+        let users = await this.users.find()
+        this.db.connection.close()
         return users
     }
 
