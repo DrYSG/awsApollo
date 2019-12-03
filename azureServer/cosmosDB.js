@@ -1,19 +1,22 @@
 const { userData } = require('./userData')
+const mongoose = require('mongoose')
 
 const localHost = {
-    user: 'postgres',
-    db: '',
+    db: 'users',
+    user: 'users',
     host: 'localhost',
     port: '8081',
-    pass: 'yechezkal',
+    pass: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==',
     string: 'mongodb://localhost:C2y6yDjf5%2FR%2Bob0N8A7Cgv30VRDJIWEHLM%2B4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw%2FJw%3D%3D@localhost:10255/admin?ssl=true'
 }
 
 const azureHost = {
-    db: 'postgres',
-    user: 'postgres@postdb',
-    host: 'postdb.postgres.database.azure.com',
-    pass: 'Yechezkal1'
+    db: 'users',
+    user: 'ysgcosmos',
+    host: 'ysgcosmos.mongo.cosmos.azure.com',
+    port: '10255',
+    pass: '09CHsNBBRc3lzJD2lAQNK80tbaHCtKrzklbMgDR3eMsaN3l2sPVd5vOOBh7FEaykjd8oRelKq0ct21DniCzlPg==',
+    string: 'mongodb://ysgcosmos:09CHsNBBRc3lzJD2lAQNK80tbaHCtKrzklbMgDR3eMsaN3l2sPVd5vOOBh7FEaykjd8oRelKq0ct21DniCzlPg==@ysgcosmos.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@ysgcosmos@'
 }
 
 class Cosmos {
@@ -24,8 +27,6 @@ class Cosmos {
         switch (where) {
             case 'local':
                 this.conn = localHost; break;
-            case 'aws':
-                this.conn = awsHost; break;
             case 'azure':
                 this.conn = azureHost; break;
         }
@@ -43,37 +44,28 @@ class Cosmos {
     async open() {
         let host = this.conn
         this.log.info(`Host: ${JSON.stringify(host)}`)
-        this.db = new Sequelize(host.db, host.user, host.pass, {
-            host: host.host,
-            dialect: 'postgres',
-            logging: false,
-            pool: {
-                max: 5,
-                min: 0,
-                idle: 20000,
-                handleDisconnects: true
-            },
-            dialectOptions: {
-                requestTimeout: 100000
-            },
-            define: {
-                freezeTableName: true
+        const where = `mongodb://${host.host}:${host.port}/${host.db}?ssl=true&replicaSet=globaldb`
+        const options = {
+            auth: {
+                user: host.user,
+                password: host.password
             }
-        })
-        this.User = this.db.define('users', {
-            firstName: Sequelize.STRING,
-            lastName: Sequelize.STRING,
-            addressNumber: Sequelize.INTEGER,
-            streetName: Sequelize.STRING,
-            city: Sequelize.STRING,
-            email: Sequelize.STRING,
-        })
+        }
         try {
-            await this.db.authenticate()
-            this.log.info('Connected to DB')
+            await mongoose.connect(where, options)
+            this.log.info('Connected to Cosmsos DB')
+            this.db = mongoose
         } catch (err) {
             this.log.error('Unable to connect to DB', err)
         }
+        this.users = mongoose.model('users', new mongoose.Schema({
+            firstName: String,
+            lastName: String,
+            addressNumber: Int,
+            streetName: String,
+            city: String,
+            email: String
+        }))
     }
 
     async select(id, logger) {
@@ -98,16 +90,16 @@ class Cosmos {
         return me.get({ plain: true })
     }
 
-    async  populate(logger) {
+    async populate(logger) {
         await this.connect(logger)
-        await this.db.sync({ force: true })
+        const user = this.users(userData[0])
         try {
-            await this.User.bulkCreate(userData, { validate: true })
+            const result = await user.save()
             this.log.info('users created')
         } catch (err) {
             this.log.error(`failed to create users, err: ${err}`)
         } finally {
-            await this.close()
+            this.db.connection.close()
         }
     }
 
@@ -124,4 +116,4 @@ class Cosmos {
     }
 }
 
-exports.DB = new Cosmos('local')
+exports.DB = new Cosmos('azureHost')

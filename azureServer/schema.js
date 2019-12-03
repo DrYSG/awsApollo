@@ -1,5 +1,6 @@
 const { gql } = require('apollo-server-azure-functions')
 const { GraphQLDateTime } = require('graphql-iso-date')
+//const { DB } = require('./cosmosDB.js')
 const { DB } = require('./db.js')
 
 exports.typeDefs = gql`

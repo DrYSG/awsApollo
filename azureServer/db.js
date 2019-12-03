@@ -129,4 +129,4 @@ class DB {
     }
 }
 
-exports.DB = new DB('local')
+exports.DB = new DB('azure')
