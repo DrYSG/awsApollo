@@ -95,7 +95,6 @@ class Cosmos {
 
     async populate(logger) {
         await this.connect(logger)
-        await this.users.deleteMany({})
         const uList = userData.map(u => this.users(u))
         try {
             const result = await this.users.collection.insert(uList)
@@ -120,4 +119,4 @@ class Cosmos {
     }
 }
 
-exports.DB = new Cosmos('azure')
+exports.DB = new Cosmos('local')
