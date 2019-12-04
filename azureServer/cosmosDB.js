@@ -1,5 +1,6 @@
 const { userData } = require('./userData')
 const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
 
 const localHost = {
     db: 'users',
@@ -18,6 +19,15 @@ const azureHost = {
     password: '09CHsNBBRc3lzJD2lAQNK80tbaHCtKrzklbMgDR3eMsaN3l2sPVd5vOOBh7FEaykjd8oRelKq0ct21DniCzlPg==',
     string: 'mongodb://ysgcosmos:09CHsNBBRc3lzJD2lAQNK80tbaHCtKrzklbMgDR3eMsaN3l2sPVd5vOOBh7FEaykjd8oRelKq0ct21DniCzlPg==@ysgcosmos.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@ysgcosmos@'
 }
+
+const personSchema = new mongoose.Schema({
+    firstName: String,
+    lastName: String,
+    addressNumber: Number,
+    streetName: String,
+    city: String,
+    email: String
+})
 
 class Cosmos {
     constructor(where) {
@@ -58,28 +68,20 @@ class Cosmos {
         } catch (err) {
             this.log.error('Unable to connect to DB', err)
         }
-        this.users = mongoose.model('users', new mongoose.Schema({
-            firstName: String,
-            lastName: String,
-            addressNumber: Number,
-            streetName: String,
-            city: String,
-            email: String
-        }))
+        this.users = mongoose.model('person', personSchema)
     }
 
     async select(id, logger) {
         await this.connect(logger)
-        let who = await this.users.findOne({ id: id } )
-        await this.db.connection.close()
-        return who
+        let who = await this.users.findOne({ id: id })
+        await this.close()
     }
 
     async findFirst(name, logger) {
         await this.connect(logger)
         this.log.info(`findFirst: ${name}`)
         let me = await this.users.findOne({ firstName: name })
-        await this.db.connection.close()
+        await this.close()
         return me
     }
 
@@ -87,34 +89,35 @@ class Cosmos {
         await this.connect(logger)
         const me = this.users(user)
         await me.save()
-        await this.db.connection.close()
+        await this.close()
         return user
     }
 
     async populate(logger) {
         await this.connect(logger)
-        const user = this.users(userData[0])
+        await this.users.deleteMany({})
+        const uList = userData.map(u => this.users(u))
         try {
-            const result = await user.save()
-            this.log.info('users created')
+            const result = await this.users.collection.insert(uList)
+            this.log.info(`users created: ${result}`)
         } catch (err) {
             this.log.error(`failed to create users, err: ${err}`)
         } finally {
-            this.db.connection.close()
+            await this.close()
         }
     }
 
     async findAll(logger) {
         await this.connect(logger)
         let users = await this.users.find()
-        this.db.connection.close()
+        await this.close()
         return users
     }
 
     async close() {
-        await this.db.close()
+        await this.db.disconnect()
         this.db = null
     }
 }
 
-exports.DB = new Cosmos('local')
+exports.DB = new Cosmos('azure')
