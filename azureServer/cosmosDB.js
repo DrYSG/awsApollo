@@ -97,7 +97,7 @@ class Cosmos {
         await this.connect(logger)
         const uList = userData.map(u => this.users(u))
         try {
-            const result = await this.users.collection.insert(uList)
+            const result = await this.users.collection.insertMany(uList)
             this.log.info(`users created: ${result}`)
         } catch (err) {
             this.log.error(`failed to create users, err: ${err}`)
