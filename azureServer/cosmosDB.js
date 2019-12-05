@@ -95,6 +95,11 @@ class Cosmos {
 
     async populate(logger) {
         await this.connect(logger)
+        try {
+            await this.users.deleteMany({})
+        } catch (err) {
+            this.log.error(`cannot empty collection: ${err}`)
+        }
         const uList = userData.map(u => this.users(u))
         try {
             const result = await this.users.collection.insertMany(uList)
@@ -119,4 +124,4 @@ class Cosmos {
     }
 }
 
-exports.DB = new Cosmos('azure')
+exports.DB = new Cosmos('local')
