@@ -54,7 +54,7 @@ class Cosmos {
     async open() {
         let host = this.conn
         this.log.info(`Host: ${JSON.stringify(host)}`)
-        const url = `mongodb://${host.host}:${host.port}/${host.db}?ssl=true&replicaSet=globaldb&retryWrites=true`
+        const url = `mongodb://${host.host}:${host.port}/${host.db}?ssl=true&replicaSet=globaldb&retryWrites=false`
         const options = {
             auth: {
                 user: host.user,
