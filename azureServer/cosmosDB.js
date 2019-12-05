@@ -54,7 +54,7 @@ class Cosmos {
     async open() {
         let host = this.conn
         this.log.info(`Host: ${JSON.stringify(host)}`)
-        const url = `mongodb://${host.host}:${host.port}/${host.db}?ssl=true&replicaSet=globaldb`
+        const url = `mongodb://${host.host}:${host.port}/${host.db}?ssl=true&replicaSet=globaldb&retryWrites=true`
         const options = {
             auth: {
                 user: host.user,
@@ -119,4 +119,4 @@ class Cosmos {
     }
 }
 
-exports.DB = new Cosmos('local')
+exports.DB = new Cosmos('azure')
