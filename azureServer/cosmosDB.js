@@ -124,4 +124,4 @@ class Cosmos {
     }
 }
 
-exports.DB = new Cosmos('local')
+exports.DB = new Cosmos('azure')
