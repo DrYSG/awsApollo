@@ -96,7 +96,8 @@ class Cosmos {
     async populate(logger) {
         await this.connect(logger)
         try {
-            await this.users.deleteMany({})
+            //await this.users.deleteMany({})
+            await this.users.collection.drop()
         } catch (err) {
             this.log.error(`cannot empty collection: ${err}`)
         }
